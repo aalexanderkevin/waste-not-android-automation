@@ -1,0 +1,11 @@
+# Ignore Appium Android automation-related files
+*.apk
+*.app
+*.log
+*.tmp
+node_modules/
+_results_/
+build/
+.idea/
+.DS_Store
+local.properties
