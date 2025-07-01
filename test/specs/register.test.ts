@@ -5,6 +5,8 @@ import { getOtp } from '../../helper/otp';
 
 const invaliEmail = "invaliemail";
 const validEmail = "testerandroid2123@mailnesia.com";
+const invalidReferralCode1 = '213';
+const invalidReferralCode2 = '12345678';
 
 describe('Register Screen UI Tests', () => {
 	beforeEach(async () => {
@@ -119,6 +121,22 @@ describe('Register Screen UI Tests', () => {
 		await registerformPage.tapNext();
 		expect(await registerformPage.noneButton.isDisplayed()).toBe(true);
 	});
+
+    it('should check to referral code validation', async () => {
+        await registerformPage.tapYesReferral();
+        await registerformPage.enterReferralCode(invalidReferralCode1);
+
+        await registerformPage.tapConfirmationScreenButton();
+        await registerformPage.errorReferralCode8Aplhanumeric.waitForDisplayed({ timeout: 5000 });
+        expect(await registerformPage.errorReferralCode8Aplhanumeric.isDisplayed()).toBe(true);
+
+        await registerformPage.enterReferralCode(invalidReferralCode2);
+        await registerformPage.tapConfirmationScreenButton();
+        await registerformPage.errorReferralCodeIncorrect.waitForDisplayed({ timeout: 5000 });
+        expect(await registerformPage.errorReferralCodeIncorrect.isDisplayed()).toBe(true);
+
+        expect(await registerformPage.noneButton.isDisplayed()).toBe(true);
+    });
 
 	it('should tap none button', async () => {
 		await registerformPage.tapNone();

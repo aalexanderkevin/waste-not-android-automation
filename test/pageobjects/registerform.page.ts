@@ -109,6 +109,25 @@ class RegisterFormPage extends Page {
 		return $('//android.widget.Button[@content-desc="同意して会員登録する"]'); // Agree
 	}
 	
+	get yesReferalButton() {
+        return driver.$('accessibility id:有'); // Yes
+    }
+
+    get referralCodeInput() {
+		return $(`//android.widget.EditText[@class="android.widget.EditText"`);
+    }
+
+	get errorReferralCode8Aplhanumeric() {
+        return driver.$(
+            '//*[contains(@label, "半角英数字8桁でご入力してください")]'
+        ); // Please enter 8 alphanumeric characters
+    }
+    get errorReferralCodeIncorrect() {
+		return driver.$(
+            '//*[contains(@label, "紹介コードが正しくありません。再度ご確認ください。")]'
+        );// The referral code is incorrect. Please check again.
+    }
+
 	async enterOtp(otp: string): Promise<void> {
 		const otpInput = this.otpInput;
 		await this.waitAndClick(otpInput);
@@ -267,8 +286,20 @@ class RegisterFormPage extends Page {
 		.up({ button: 0 })
 		.perform();	  
 	}
+	
+    async tapYesReferral(): Promise<void> {
+        await this.waitAndClick(this.yesReferalButton);
+    }
 
 
+    async enterReferralCode(referralCode: string): Promise<void> {
+        await this.referralCodeInput.waitForDisplayed({ timeout: 5000 });
+        const referralCodeInput = this.referralCodeInput;
+        await referralCodeInput.click();
+        await referralCodeInput.clearValue();
+        await referralCodeInput.addValue(referralCode);
+        await driver.hideKeyboard();
+    }
 	
 }
 
